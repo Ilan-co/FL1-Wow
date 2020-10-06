@@ -1,9 +1,11 @@
 import 'package:flutagram/Models/user.dart';
 import 'package:flutagram/Services/database.dart';
+import 'package:flutagram/Services/geo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final geo = GeoService();
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user) {
@@ -48,9 +50,10 @@ class AuthService {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+      String location = await geo.getPos();
       // create a new document for the user with the uid
       await DatabaseService(uid: user.uid).updateUserData(
-          'Position indéfinie', 'Nouveau Flutagramer', "Sans image");
+          location, 'Nouveau Flutagramer', "Sans image");
       return _userFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());

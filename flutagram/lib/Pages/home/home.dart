@@ -6,8 +6,42 @@ import 'package:flutagram/Services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+  int _selectedIndex = 0;
+  final List<Widget> _children = [
+    FlutagramerList(),
+    Text("Photo view"),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  BottomNavigationBar _setupNavigationBar() {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.list),
+          title: Text('Flutagrammers'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_a_photo),
+          title: Text('Prendre une photo'),
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.teal,
+      onTap: _onItemTapped,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +80,8 @@ class Home extends StatelessWidget {
             )
           ],
         ),
-        body: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/coffee_bg.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: FlutagramerList()),
+        body: _children[_selectedIndex],
+        bottomNavigationBar: _setupNavigationBar(),
       ),
     );
   }
