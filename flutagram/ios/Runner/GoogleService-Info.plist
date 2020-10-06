@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>701825521843-kh6js8jcpe1qq53q4dfaovtvv028utml.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.701825521843-kh6js8jcpe1qq53q4dfaovtvv028utml</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBK1dUywsGOmXSKXZ_WntFNjlDP-m6K9YY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>701825521843</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.flutagram</string>
+	<key>PROJECT_ID</key>
+	<string>flutagram-57104</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flutagram-57104.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:701825521843:ios:b4c05dba5d12d6103938c6</string>
+	<key>DATABASE_URL</key>
+	<string>https://flutagram-57104.firebaseio.com</string>
+</dict>
+</plist>
