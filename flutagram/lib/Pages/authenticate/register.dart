@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutagram/Services/auth.dart';
 import 'package:flutagram/Assets/constants.dart';
 import 'package:flutagram/Assets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -14,12 +16,46 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final _imagePicker = ImagePicker();
   String error = '';
   bool loading = false;
 
   // text field state
   String email = '';
   String password = '';
+  PickedFile profilPicture;
+
+  void _openGal() async {
+    var picture = await _imagePicker.getImage(source: ImageSource.gallery);
+    setState(() {
+      profilPicture = picture;
+    });
+  }
+
+  void _openCamera() async {
+    var picture = await _imagePicker.getImage(source: ImageSource.camera);
+    setState(() {
+      profilPicture = picture;
+    });
+  }
+
+  Widget _displayImage() {
+    if (profilPicture != null) {
+      return CircleAvatar(
+        backgroundImage: FileImage(File(profilPicture.path)),
+        radius: 80,
+      );
+    } else {
+      return CircleAvatar(
+        backgroundColor: Colors.teal[700],
+        child: Text(
+          "Pas de photo de profil",
+          style: TextStyle(color: Colors.white),
+        ),
+        radius: 80,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +81,23 @@ class _RegisterState extends State<Register> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    SizedBox(height: 20.0),
+                    _displayImage(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        RaisedButton(
+                            child: Text("Camera"),
+                            onPressed: () {
+                              _openCamera();
+                            }),
+                        RaisedButton(
+                            child: Text("Galerie"),
+                            onPressed: () {
+                              _openGal();
+                            }),
+                      ],
+                    ),
                     SizedBox(height: 20.0),
                     TextFormField(
                       decoration:
@@ -77,8 +130,9 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password);
+                            dynamic result =
+                                await _auth.registerWithEmailAndPassword(
+                                    email, password, profilPicture);
                             if (result == null) {
                               setState(() {
                                 loading = false;

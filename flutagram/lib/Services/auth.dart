@@ -2,6 +2,7 @@ import 'package:flutagram/Models/user.dart';
 import 'package:flutagram/Services/database.dart';
 import 'package:flutagram/Services/geo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -39,24 +40,25 @@ class AuthService {
       FirebaseUser user = result.user;
       return user;
     } catch (error) {
-      print(error.toString());
+      print("Sign In Error : " + error.toString());
       return null;
     }
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String email, String password, PickedFile profilPicture) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
       String location = await geo.getPos();
       // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData(
-          location, 'Nouveau Flutagramer', "Sans image");
+      await DatabaseService(uid: user.uid).updateUserData(location, email);
+      await DatabaseService(uid: user.uid).uploadProfilPicture(profilPicture);
       return _userFromFirebaseUser(user);
     } catch (error) {
-      print(error.toString());
+      print("Register Error : " + error.toString());
       return null;
     }
   }
@@ -64,9 +66,10 @@ class AuthService {
   // sign out
   Future signOut() async {
     try {
+      _userFromFirebaseUser(null);
       return await _auth.signOut();
     } catch (error) {
-      print(error.toString());
+      print("Sign Out Error : " + error.toString());
       return null;
     }
   }
