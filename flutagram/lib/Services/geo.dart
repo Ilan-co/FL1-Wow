@@ -2,6 +2,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
 
 class GeoService {
+  /**
+   * Get Latitude and Longitude with Geolocator
+   * Get Address with GeoCoder
+   */
   Future<String> getPos() async {
     Position position =
         await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);

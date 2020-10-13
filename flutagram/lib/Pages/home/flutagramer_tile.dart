@@ -15,7 +15,9 @@ class FlutagramerTile extends StatelessWidget {
           leading: CircleAvatar(
             radius: 25.0,
             backgroundColor: Colors.teal,
-            backgroundImage: AssetImage('assets/coffee_icon.png'),
+            backgroundImage: flutagramer.picture != null
+                ? NetworkImage(flutagramer.picture)
+                : null,
           ),
           title: Text(flutagramer.name),
           subtitle: Text('Situé à ${flutagramer.location}'),

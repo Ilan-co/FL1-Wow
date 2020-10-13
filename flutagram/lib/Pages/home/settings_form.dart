@@ -16,7 +16,6 @@ class _SettingsFormState extends State<SettingsForm> {
   // form values
   String _currentName;
   String _currentLocation;
-  String _currentPicture;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +52,8 @@ class _SettingsFormState extends State<SettingsForm> {
                         if (_formKey.currentState.validate()) {
                           await DatabaseService(uid: user.uid).updateUserData(
                               _currentLocation ?? snapshot.data.location,
-                              _currentName ?? snapshot.data.name,
-                              _currentPicture ?? snapshot.data.picture);
+                              _currentName ?? snapshot.data.name
+                          );
                           Navigator.pop(context);
                         }
                       }),
