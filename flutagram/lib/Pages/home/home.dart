@@ -1,6 +1,8 @@
 import 'package:flutagram/Models/flutagramer.dart';
 import 'package:flutagram/Pages/home/flutagramer_list.dart';
 import 'package:flutagram/Pages/home/settings_form.dart';
+import 'package:flutagram/Pages/camera/camera.dart';
+import 'package:flutagram/Pages/feed/feed.dart';
 import 'package:flutagram/Services/auth.dart';
 import 'package:flutagram/Services/database.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,9 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   int _selectedIndex = 0;
   final List<Widget> _children = [
+    Feed(),
     FlutagramerList(),
-    Text("Photo view"),
+    Camera(),
   ];
 
   void _onItemTapped(int index) {
@@ -28,6 +31,10 @@ class _HomeState extends State<Home> {
   BottomNavigationBar _setupNavigationBar() {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.line_style),
+          title: Text('Fil d\'actualité'),
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list),
           title: Text('Flutagrammers'),
