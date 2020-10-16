@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutagram/Models/flutagramer.dart';
 import 'package:flutagram/Models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
@@ -19,7 +19,23 @@ class DatabaseService {
 
   Future<void> updateUserData(String location, String name) async {
     return await FlutagramerCollection.document(uid)
-        .setData({'location': location, 'name': name});
+        .setData({'uid': uid, 'location': location, 'name': name});
+  }
+
+  Future<void> followUser(String uidToFollow) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String UID = prefs.getString("UID");
+    return await FlutagramerCollection.document(uidToFollow).updateData({
+      'followers': FieldValue.arrayUnion([UID])
+    });
+  }
+
+  Future<void> unfollowUser(String uidToFollow) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String UID = prefs.getString("UID");
+    return await FlutagramerCollection.document(uidToFollow).updateData({
+      'followers': FieldValue.arrayRemove([UID])
+    });
   }
 
   Future<void> uploadProfilPicture(PickedFile picture) async {
@@ -68,9 +84,12 @@ class DatabaseService {
     return snapshot.documents.map((doc) {
       //print(doc.data);
       return Flutagramer(
-          name: doc.data['name'],
-          picture: doc.data['picture'],
-          location: doc.data['location'] ?? 'Non indiqué');
+        uid: doc.data['uid'],
+        name: doc.data['name'],
+        picture: doc.data['picture'],
+        location: doc.data['location'] ?? 'Non indiqué',
+        followers: doc.data['followers'],
+      );
     }).toList();
   }
 
