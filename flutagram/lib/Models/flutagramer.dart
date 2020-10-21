@@ -1,5 +1,6 @@
 class Flutagramer {
   final String uid;
+  final String token;
   final String name;
   final String location;
   final String picture;
@@ -8,6 +9,7 @@ class Flutagramer {
 
   Flutagramer(
       {this.uid,
+      this.token,
       this.name,
       this.location,
       this.picture,

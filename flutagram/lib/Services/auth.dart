@@ -1,12 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutagram/Models/user.dart';
 import 'package:flutagram/Services/database.dart';
 import 'package:flutagram/Services/geo.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutagram/Services/preferences.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final PreferencesServices _pref = PreferencesServices();
   final _geo = GeoService();
 
   // create user obj based on firebase user
@@ -39,9 +40,7 @@ class AuthService {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("UID", user.uid);
-      print(user.uid);
+      _pref.setUID(user.uid);
       return user;
     } catch (error) {
       print("Sign In Error : " + error.toString());
@@ -60,8 +59,7 @@ class AuthService {
       // create a new document for the user with the uid
       await DatabaseService(uid: user.uid).updateUserData(location, email);
       await DatabaseService(uid: user.uid).uploadProfilPicture(profilPicture);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("UID", user.uid);
+      _pref.setUID(user.uid);
       return _userFromFirebaseUser(user);
     } catch (error) {
       print("Register Error : " + error.toString());
@@ -73,8 +71,7 @@ class AuthService {
   Future signOut() async {
     try {
       _userFromFirebaseUser(null);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.remove("UID");
+      _pref.deleteUID();
       return await _auth.signOut();
     } catch (error) {
       print("Sign Out Error : " + error.toString());

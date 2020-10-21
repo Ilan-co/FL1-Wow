@@ -43,20 +43,21 @@ class _SettingsFormState extends State<SettingsForm> {
                   ),
                   SizedBox(height: 10.0),
                   RaisedButton(
-                      color: Colors.teal[400],
-                      child: Text(
-                        'Mettre à jour',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          await DatabaseService(uid: user.uid).updateUserData(
-                              _currentLocation ?? snapshot.data.location,
-                              _currentName ?? snapshot.data.name
-                          );
-                          Navigator.pop(context);
-                        }
-                      }),
+                    color: Colors.teal[400],
+                    child: Text(
+                      'Mettre à jour',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        await DatabaseService(uid: user.uid).updateUserData(
+                          _currentLocation ?? snapshot.data.location,
+                          _currentName ?? snapshot.data.name,
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
                 ],
               ),
             );

@@ -1,16 +1,11 @@
 import 'package:flutagram/Models/flutagramer.dart';
 import 'package:flutagram/Services/database.dart';
+import 'package:flutagram/Services/preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FlutagramerTile extends StatelessWidget {
   final Flutagramer flutagramer;
   FlutagramerTile({this.flutagramer});
-
-  Future<String> _getPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("UID");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +24,7 @@ class FlutagramerTile extends StatelessWidget {
           title: Text(flutagramer.name),
           subtitle: Text('Situé à ${flutagramer.location}'),
           trailing: FutureBuilder(
-            future: _getPrefs(),
+            future: PreferencesServices().getUID,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data == flutagramer.uid) {
@@ -44,7 +39,7 @@ class FlutagramerTile extends StatelessWidget {
                     onPressed: () {
                       !flutagramer.followers.contains(snapshot.data) ||
                               flutagramer.followers == null
-                          ? DatabaseService().followUser(flutagramer.uid)
+                          ? DatabaseService().followUser(flutagramer.uid, flutagramer.token, context)
                           : DatabaseService().unfollowUser(flutagramer.uid);
                     },
                   );
