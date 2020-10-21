@@ -134,10 +134,13 @@ class DatabaseService {
   // user data from snapshots
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
-        uid: uid,
-        name: snapshot.data['name'],
-        location: snapshot.data['location'],
-        picture: snapshot.data['picture']);
+      uid: uid,
+      name: snapshot.data['name'],
+      location: snapshot.data['location'],
+      picture: snapshot.data['picture'],
+      followers: snapshot.data['followers'],
+      follows: snapshot.data['follows'],
+    );
   }
 
   // get Flutagramers stream
