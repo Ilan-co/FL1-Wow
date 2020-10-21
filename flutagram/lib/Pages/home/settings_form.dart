@@ -30,6 +30,40 @@ class _SettingsFormState extends State<SettingsForm> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
+                  CircleAvatar(
+                    radius: 50.0,
+                    backgroundColor: Colors.teal,
+                    backgroundImage: userData.picture != null
+                        ? NetworkImage(userData.picture)
+                        : null,
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text('Abonnements'),
+                          Text(userData.follows != null
+                              ? userData.follows.length.toString()
+                              : "0"),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('Abonnés'),
+                          Text(userData.followers != null
+                              ? userData.followers.length.toString()
+                              : "0"),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
                   Text(
                     'Modifier son profil',
                     style: TextStyle(fontSize: 18.0),
