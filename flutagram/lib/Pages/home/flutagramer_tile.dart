@@ -4,15 +4,14 @@ import 'package:flutagram/Services/preferences.dart';
 import 'package:flutter/material.dart';
 
 class FlutagramerTile extends StatelessWidget {
+  const FlutagramerTile({this.flutagramer});
   final Flutagramer flutagramer;
-  FlutagramerTile({this.flutagramer});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
-        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+        margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
@@ -23,12 +22,12 @@ class FlutagramerTile extends StatelessWidget {
           ),
           title: Text(flutagramer.name),
           subtitle: Text('Situé à ${flutagramer.location}'),
-          trailing: FutureBuilder(
+          trailing: FutureBuilder<String>(
             future: PreferencesServices().getUID,
-            builder: (context, snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data == flutagramer.uid) {
-                  return SizedBox();
+                  return const SizedBox();
                 } else {
                   return IconButton(
                     color: Colors.black,
@@ -45,7 +44,7 @@ class FlutagramerTile extends StatelessWidget {
                   );
                 }
               } else {
-                return SizedBox();
+                return const SizedBox();
               }
             },
           ),

@@ -8,23 +8,24 @@ import 'package:flutagram/Services/notifications.dart';
 import 'package:flutagram/Services/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as Path;
+import 'package:path/path.dart' as _path;
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseService {
-  final String uid;
   DatabaseService({this.uid});
+
+  final String uid;
 
   final PreferencesServices _pref = PreferencesServices();
   final NotificationsServices _notif = NotificationsServices();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   // collection reference
-  final CollectionReference FlutagramerCollection =
+  final CollectionReference flutagramerCollection =
       Firestore.instance.collection('Flutagramers');
 
   Future<void> updateUserData(String location, String name) async {
-    return await FlutagramerCollection.document(uid).setData({
+    return await flutagramerCollection.document(uid).setData(<String, String>{
       'token': await _firebaseMessaging.getToken(),
       'uid': uid,
       'location': location,
@@ -34,17 +35,21 @@ class DatabaseService {
 
   Future<void> followUser(
       String uidToFollow, String token, BuildContext context) async {
-    String UID = await _pref.getUID;
-    await FlutagramerCollection.document(uidToFollow).updateData({
-      'followers': FieldValue.arrayUnion([UID])
-    });
-    await FlutagramerCollection.document(UID).updateData({
-      'follows': FieldValue.arrayUnion([uidToFollow])
+    final List<String> uid = <String>[];
+    uid.add(await _pref.getUID);
+    final List<String> listUidToFollow = <String>[];
+    listUidToFollow.add(uidToFollow);
+    await flutagramerCollection.document(uidToFollow).updateData(
+        <String, FieldValue>{'followers': FieldValue.arrayUnion(uid)});
+    await flutagramerCollection
+        .document(uid[0])
+        .updateData(<String, FieldValue>{
+      'follows': FieldValue.arrayUnion(listUidToFollow)
     });
     await _notif.sendNotificationsNewFollower(token);
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-      final snackBar = SnackBar(
+      final SnackBar snackBar = SnackBar(
         content: Text(
             "${message['notification']['title']}\n${message['notification']['body']}"),
       );
@@ -54,78 +59,86 @@ class DatabaseService {
   }
 
   Future<void> unfollowUser(String uidToFollow) async {
-    String UID = await _pref.getUID;
-    await FlutagramerCollection.document(uidToFollow).updateData({
-      'followers': FieldValue.arrayRemove([UID])
-    });
-    await FlutagramerCollection.document(UID).updateData({
-      'follows': FieldValue.arrayRemove([uidToFollow])
+    final List<String> uid = <String>[];
+    uid.add(await _pref.getUID);
+    final List<String> listUidToFollow = <String>[];
+    listUidToFollow.add(uidToFollow);
+    await flutagramerCollection.document(uidToFollow).updateData(
+        <String, FieldValue>{'followers': FieldValue.arrayRemove(uid)});
+    await flutagramerCollection
+        .document(uid[0])
+        .updateData(<String, FieldValue>{
+      'follows': FieldValue.arrayRemove(listUidToFollow)
     });
     _firebaseMessaging.unsubscribeFromTopic(uidToFollow);
   }
 
   Future<void> uploadProfilPicture(PickedFile picture) async {
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    String newName = Path.join(dir, '$uid.png');
-    File f = await File(picture.path).copy(newName);
-    StorageReference firebaseStorageRef =
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String newName = _path.join(dir, '$uid.png');
+    final File f = await File(picture.path).copy(newName);
+    final StorageReference firebaseStorageRef =
         FirebaseStorage.instance.ref().child('profilPicture/$uid');
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(f);
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    final StorageUploadTask uploadTask = firebaseStorageRef.putFile(f);
+    final StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     taskSnapshot.ref.getDownloadURL().then(
-          (value) async => await FlutagramerCollection.document(uid)
-              .updateData({'picture': value}),
+          (dynamic value) async => await flutagramerCollection
+              .document(uid)
+              .updateData(<String, dynamic>{'picture': value}),
         );
   }
 
   Future<void> uploadPublication(
       BuildContext context, PickedFile picture, String location) async {
-    String UID = await _pref.getUID;
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    String newName = Path.join(dir,
-        '$UID-${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}.png');
-    File f = await File(picture.path).copy(newName);
-    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(
-        'feed/$UID-${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}');
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(f);
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-    taskSnapshot.ref.getDownloadURL().then((value) async {
+    final String uid = await _pref.getUID;
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String newName = _path.join(dir,
+        '$uid-${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}.png');
+    final File f = await File(picture.path).copy(newName);
+    final StorageReference firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child(
+            'feed/$uid-${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}${DateTime.now().hour}${DateTime.now().minute}');
+    final StorageUploadTask uploadTask = firebaseStorageRef.putFile(f);
+    final StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    taskSnapshot.ref.getDownloadURL().then((dynamic value) async {
       try {
-        await FlutagramerCollection.document(UID).updateData({
-          'feedPictures': FieldValue.arrayUnion([
-            {
-              'image': value,
-              'location': location,
-            }
-          ])
+        final List<Map<String, dynamic>> listElement = <Map<String, dynamic>>[];
+        listElement.add(<String, dynamic>{
+          'image': value,
+          'location': location,
+        });
+        await flutagramerCollection
+            .document(uid)
+            .updateData(<String, FieldValue>{
+          'feedPictures': FieldValue.arrayUnion(listElement)
         });
         Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text("Publication réussie")));
+            .showSnackBar(const SnackBar(content: Text('Publication réussie')));
         _notif.sendNotificationsNewPost();
       } catch (error) {
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text("Echec de la publication")));
+        Scaffold.of(context).showSnackBar(
+            const SnackBar(content: Text('Echec de la publication')));
       }
     });
   }
 
   // Flutagramer list from snapshot
-  List<Flutagramer> _FlutagramerListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc) {
-      //print(doc.data);
+  List<Flutagramer> _flutagramerListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map<Flutagramer>((DocumentSnapshot doc) {
       return Flutagramer(
-        uid: doc.data['uid'],
-        token: doc.data['token'],
-        name: doc.data['name'],
-        picture: doc.data['picture'],
-        location: doc.data['location'] ?? 'Non indiqué',
-        followers: doc.data['followers'],
+        uid: doc.data['uid'] as String,
+        token: doc.data['token'] as String,
+        name: doc.data['name'] as String,
+        picture: doc.data['picture'] as String,
+        location: doc.data['location'] as String ?? 'Non indiqué',
+        followers: doc.data['followers'] as List<dynamic>,
       );
     }).toList();
   }
 
-  List<dynamic> _FeedListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc) {
+  List<dynamic> _feedListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map<dynamic>((DocumentSnapshot doc) {
       // print(doc.data);
       return doc.data['feedPictures'];
     }).toList();
@@ -135,26 +148,27 @@ class DatabaseService {
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
       uid: uid,
-      name: snapshot.data['name'],
-      location: snapshot.data['location'],
-      picture: snapshot.data['picture'],
-      followers: snapshot.data['followers'],
-      follows: snapshot.data['follows'],
+      name: snapshot.data['name'].toString(),
+      location: snapshot.data['location'].toString(),
+      picture: snapshot.data['picture'].toString(),
+      followers: snapshot.data['followers'] as List<String>,
+      follows: snapshot.data['follows'] as List<String>,
     );
   }
 
   // get Flutagramers stream
-  Stream<List<Flutagramer>> get Flutagramers {
-    return FlutagramerCollection.snapshots().map(_FlutagramerListFromSnapshot);
+  Stream<List<Flutagramer>> get flutagramers {
+    return flutagramerCollection.snapshots().map(_flutagramerListFromSnapshot);
   }
 
-  Stream<List<dynamic>> get Feed {
-    return FlutagramerCollection.snapshots().map(_FeedListFromSnapshot);
+  Stream<List<dynamic>> get feed {
+    return flutagramerCollection.snapshots().map(_feedListFromSnapshot);
   }
 
   // get user doc stream
   Stream<UserData> get userData {
-    return FlutagramerCollection.document(uid)
+    return flutagramerCollection
+        .document(uid)
         .snapshots()
         .map(_userDataFromSnapshot);
   }

@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   int _selectedIndex = 0;
-  final List<Widget> _children = [
+  final List<Widget> _children = <Widget>[
     Feed(),
     FlutagramerList(),
     Camera(),
@@ -53,36 +53,36 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     void _showSettingsPanel() {
-      showModalBottomSheet(
+      showModalBottomSheet<Widget>(
           context: context,
-          builder: (context) {
+          builder: (BuildContext context) {
             return Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
               child: SettingsForm(),
             );
           });
     }
 
     return StreamProvider<List<Flutagramer>>.value(
-      value: DatabaseService().Flutagramers,
+      value: DatabaseService().flutagramers,
       child: Scaffold(
         backgroundColor: Colors.teal[300],
         appBar: AppBar(
-          title: Text('Flutagram'),
+          title: const Text('Flutagram'),
           backgroundColor: Colors.teal,
           elevation: 0.0,
           titleSpacing: 5.0,
           actions: <Widget>[
             FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Se déconnecter'),
+              icon: const Icon(Icons.person),
+              label: const Text('Se déconnecter'),
               onPressed: () async {
                 await _auth.signOut();
               },
             ),
             FlatButton.icon(
-              icon: Icon(Icons.settings),
-              label: Text('Profil'),
+              icon: const Icon(Icons.settings),
+              label: const Text('Profil'),
               onPressed: () => _showSettingsPanel(),
             )
           ],

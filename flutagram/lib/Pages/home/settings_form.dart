@@ -11,7 +11,7 @@ class SettingsForm extends StatefulWidget {
 }
 
 class _SettingsFormState extends State<SettingsForm> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // form values
   String _currentName;
@@ -19,13 +19,13 @@ class _SettingsFormState extends State<SettingsForm> {
 
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
+    final User user = Provider.of<User>(context);
 
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user.uid).userData,
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<UserData> snapshot) {
           if (snapshot.hasData) {
-            UserData userData = snapshot.data;
+            final UserData userData = snapshot.data;
             return Form(
               key: _formKey,
               child: Column(
@@ -37,48 +37,48 @@ class _SettingsFormState extends State<SettingsForm> {
                         ? NetworkImage(userData.picture)
                         : null,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20.0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Column(
-                        children: [
-                          Text('Abonnements'),
+                        children: <Widget>[
+                          const Text('Abonnements'),
                           Text(userData.follows != null
                               ? userData.follows.length.toString()
-                              : "0"),
+                              : '0'),
                         ],
                       ),
                       Column(
-                        children: [
-                          Text('Abonnés'),
+                        children: <Widget>[
+                          const Text('Abonnés'),
                           Text(userData.followers != null
                               ? userData.followers.length.toString()
-                              : "0"),
+                              : '0'),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20.0,
                   ),
-                  Text(
+                  const Text(
                     'Modifier son profil',
                     style: TextStyle(fontSize: 18.0),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   TextFormField(
                     initialValue: userData.name,
                     decoration: textInputDecoration,
-                    validator: (val) => val.isEmpty ? 'Entrer un nom' : null,
-                    onChanged: (val) => setState(() => _currentName = val),
+                    validator: (String val) => val.isEmpty ? 'Entrer un nom' : null,
+                    onChanged: (String val) => setState(() => _currentName = val),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   RaisedButton(
                     color: Colors.teal[400],
-                    child: Text(
+                    child: const Text(
                       'Mettre à jour',
                       style: TextStyle(color: Colors.white),
                     ),

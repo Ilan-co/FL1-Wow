@@ -12,19 +12,19 @@ class Camera extends StatefulWidget {
 
 class _CameraState extends State<Camera> {
   final DatabaseService _database = DatabaseService();
-  final _geo = GeoService();
-  final _imagePicker = ImagePicker();
+  final GeoService _geo = GeoService();
+  final ImagePicker _imagePicker = ImagePicker();
   PickedFile feedPicture;
 
-  void _openGal() async {
-    var picture = await _imagePicker.getImage(source: ImageSource.gallery);
+  Future<void> _openGal() async {
+    final PickedFile picture = await _imagePicker.getImage(source: ImageSource.gallery);
     setState(() {
       feedPicture = picture;
     });
   }
 
-  void _openCamera() async {
-    var picture = await _imagePicker.getImage(source: ImageSource.camera);
+  Future<void> _openCamera() async {
+    final PickedFile picture = await _imagePicker.getImage(source: ImageSource.camera);
     setState(() {
       feedPicture = picture;
     });
@@ -42,12 +42,12 @@ class _CameraState extends State<Camera> {
     return Container();
   }
 
-  void _upload() async {
+  Future<void> _upload() async {
     if (feedPicture != null) {
-      String location = await _geo.getPos();
+      final String location = await _geo.getPos();
       _database.uploadPublication(context, feedPicture, location);
     } else {
-      final _snack = SnackBar(content : Text("Aucune image n\'a été ajouté"));
+      const SnackBar _snack = SnackBar(content : Text("Aucune image n\'a été ajouté"));
       Scaffold.of(context).showSnackBar(_snack);
     }
   }
@@ -57,30 +57,30 @@ class _CameraState extends State<Camera> {
     return Scaffold(
       backgroundColor: Colors.teal[300],
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Column(
-          children: [
+          children: <Widget>[
             _displayImage(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 RaisedButton(
-                    child: Text("Camera"),
+                    child: const Text('Camera'),
                     onPressed: () {
                       _openCamera();
                     }),
                 RaisedButton(
-                    child: Text("Galerie"),
+                    child: const Text('Galerie'),
                     onPressed: () {
                       _openGal();
                     }),
               ],
             ),
             RaisedButton(
-                child: Text("Poster"),
+                child: const Text('Poster'),
                 onPressed: () {
                   _upload();
                 }),

@@ -6,11 +6,11 @@ import 'package:http/http.dart' as http;
 
 class NotificationsServices {
   final String serverToken =
-      "AAAAo2gPmLM:APA91bFVOmlsn4QYLoZV-NvVqQDyr0tt2rDmmeKayAa6Wg-ppGqJH-bbgw5tD4jPur6KwEWYp4y31qDd_Xv3xlx2Aw9VBrnwyGWK2sb3ZT42H7xkx8nKWaPHzWj8lO_Qffyn7vANgpe0";
+      'AAAAo2gPmLM:APA91bFVOmlsn4QYLoZV-NvVqQDyr0tt2rDmmeKayAa6Wg-ppGqJH-bbgw5tD4jPur6KwEWYp4y31qDd_Xv3xlx2Aw9VBrnwyGWK2sb3ZT42H7xkx8nKWaPHzWj8lO_Qffyn7vANgpe0';
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final PreferencesServices _preferencesServices = PreferencesServices();
 
-  Future<void> sendNotificationsNewFollower(String UidDest) async {
+  Future<void> sendNotificationsNewFollower(String uidDest) async {
     await _firebaseMessaging.requestNotificationPermissions();
     await http.post(
       'https://fcm.googleapis.com/fcm/send',
@@ -29,7 +29,7 @@ class NotificationsServices {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
             'status': 'done'
           },
-          'to': UidDest,
+          'to': uidDest,
         },
       ),
     );
@@ -55,7 +55,7 @@ class NotificationsServices {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
             'status': 'done'
           },
-          'to': "/topics/${await _preferencesServices.getUID}",
+          'to': '/topics/${await _preferencesServices.getUID}',
         },
       ),
     );
