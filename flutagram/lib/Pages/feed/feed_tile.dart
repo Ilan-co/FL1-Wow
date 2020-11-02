@@ -2,33 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PictureTile extends StatelessWidget {
-  final List<dynamic> feedPicture;
-
-  PictureTile({this.feedPicture});
+  const PictureTile({this.feedPicture});
+  final Map<String, String> feedPicture;
 
   Widget _displayFeed() {
-    List<Widget> list = new List<Widget>();
+    final List<Widget> list = <Widget>[];
     if (feedPicture != null) {
-      for (var i = 0; i < feedPicture.length; i++) {
+      for (int i = 0; i < feedPicture.length; i++) {
         list.add(
           Card(
-            margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+            margin: const EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
             child: Column(
-              children: [
-                SizedBox(
+              children: <Widget>[
+                const SizedBox(
                   height: 15,
                 ),
                 Image(
-                  image: NetworkImage(feedPicture[i]['image']),
+                  image: NetworkImage(feedPicture['image']),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Text(
-                  feedPicture[i]['location'],
+                  feedPicture['location'],
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
               ],
@@ -36,13 +35,13 @@ class PictureTile extends StatelessWidget {
           ),
         );
         list.add(
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
         );
       }
     }
-    return new Column(children: list);
+    return Column(children: list);
   }
 
   @override
@@ -50,7 +49,7 @@ class PictureTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Column(
-        children: [_displayFeed()],
+        children: <Widget>[_displayFeed()],
       ),
     );
   }

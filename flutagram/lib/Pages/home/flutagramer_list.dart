@@ -11,11 +11,12 @@ class FlutagramerList extends StatefulWidget {
 class _FlutagramerListState extends State<FlutagramerList> {
   @override
   Widget build(BuildContext context) {
-    final flutagramers = Provider.of<List<Flutagramer>>(context) ?? [];
+    final List<Flutagramer> flutagramers =
+        Provider.of<List<Flutagramer>>(context) ?? <Flutagramer>[];
 
     return ListView.builder(
       itemCount: flutagramers.length,
-      itemBuilder: (context, index) {
+      itemBuilder: (BuildContext context, int index) {
         return FlutagramerTile(flutagramer: flutagramers[index]);
       },
     );

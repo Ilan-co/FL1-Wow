@@ -4,8 +4,8 @@ import 'package:flutagram/Assets/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
+  const SignIn({this.toggleView});
   final Function toggleView;
-  SignIn({this.toggleView});
 
   @override
   _SignInState createState() => _SignInState();
@@ -13,7 +13,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
 
@@ -30,54 +30,54 @@ class _SignInState extends State<SignIn> {
             appBar: AppBar(
               backgroundColor: Colors.teal,
               elevation: 0.0,
-              title: Text('Se connecter'),
+              title: const Text('Se connecter'),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('S\'inscrire'),
+                  icon: const Icon(Icons.person),
+                  label: const Text('S\'inscrire'),
                   onPressed: () => widget.toggleView(),
                 ),
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       decoration:
                           textInputDecoration.copyWith(hintText: 'Email'),
-                      validator: (val) =>
+                      validator: (String val) =>
                           val.isEmpty ? 'Entrer un email' : null,
-                      onChanged: (val) {
+                      onChanged: (String val) {
                         setState(() => email = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       obscureText: true,
                       decoration: textInputDecoration.copyWith(
                           hintText: 'Mot de passe'),
-                      validator: (val) => val.length < 6
+                      validator: (String val) => val.length < 6
                           ? 'Entrer un password 6+ charactères'
                           : null,
-                      onChanged: (val) {
+                      onChanged: (String val) {
                         setState(() => password = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     RaisedButton(
                         color: Colors.teal[400],
-                        child: Text(
+                        child: const Text(
                           'Se connecter',
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result = await _auth
+                            final dynamic result = await _auth
                                 .signInWithEmailAndPassword(email, password);
                             if (result == null) {
                               setState(() {
@@ -88,10 +88,10 @@ class _SignInState extends State<SignIn> {
                             }
                           }
                         }),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     ),
                   ],
                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const textInputDecoration = InputDecoration(
+const InputDecoration textInputDecoration = InputDecoration(
   fillColor: Colors.white,
   filled: true,
   contentPadding: EdgeInsets.all(12.0),

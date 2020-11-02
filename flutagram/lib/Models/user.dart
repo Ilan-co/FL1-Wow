@@ -1,17 +1,10 @@
 class User {
-  final String uid;
-
   User({this.uid});
+
+  final String uid;
 }
 
 class UserData {
-  final String uid;
-  final String name;
-  final String location;
-  final String picture;
-  final List<dynamic> followers;
-  final List<dynamic> follows;
-
   UserData(
       {this.uid,
       this.location,
@@ -19,4 +12,11 @@ class UserData {
       this.name,
       this.followers,
       this.follows});
+
+  final String uid;
+  final String name;
+  final String location;
+  final String picture;
+  final List<String> followers;
+  final List<String> follows;
 }

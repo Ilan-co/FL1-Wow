@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Register extends StatefulWidget {
+  const Register({this.toggleView});
   final Function toggleView;
-  Register({this.toggleView});
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -15,8 +15,8 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
-  final _imagePicker = ImagePicker();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ImagePicker _imagePicker = ImagePicker();
   String error = '';
   bool loading = false;
 
@@ -25,15 +25,15 @@ class _RegisterState extends State<Register> {
   String password = '';
   PickedFile profilPicture;
 
-  void _openGal() async {
-    var picture = await _imagePicker.getImage(source: ImageSource.gallery);
+  Future<void> _openGal() async {
+    final PickedFile picture = await _imagePicker.getImage(source: ImageSource.gallery);
     setState(() {
       profilPicture = picture;
     });
   }
 
-  void _openCamera() async {
-    var picture = await _imagePicker.getImage(source: ImageSource.camera);
+  Future<void> _openCamera() async {
+    final PickedFile picture = await _imagePicker.getImage(source: ImageSource.camera);
     setState(() {
       profilPicture = picture;
     });
@@ -48,8 +48,8 @@ class _RegisterState extends State<Register> {
     } else {
       return CircleAvatar(
         backgroundColor: Colors.teal[700],
-        child: Text(
-          "Pas de photo de profil",
+        child: const Text(
+          'Pas de photo de profil',
           style: TextStyle(color: Colors.white),
         ),
         radius: 80,
@@ -66,71 +66,71 @@ class _RegisterState extends State<Register> {
             appBar: AppBar(
               backgroundColor: Colors.teal,
               elevation: 0.0,
-              title: Text('S\'inscrire'),
+              title: const Text('S\'inscrire'),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('Se connecter'),
+                  icon: const Icon(Icons.person),
+                  label: const Text('Se connecter'),
                   onPressed: () => widget.toggleView(),
                 ),
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     _displayImage(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
+                      children: <Widget>[
                         RaisedButton(
-                            child: Text("Camera"),
+                            child: const Text('Camera'),
                             onPressed: () {
                               _openCamera();
                             }),
                         RaisedButton(
-                            child: Text("Galerie"),
+                            child: const Text('Galerie'),
                             onPressed: () {
                               _openGal();
                             }),
                       ],
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       decoration:
                           textInputDecoration.copyWith(hintText: 'Email'),
-                      validator: (val) =>
+                      validator: (String val) =>
                           val.isEmpty ? 'Entrer un email' : null,
-                      onChanged: (val) {
+                      onChanged: (String val) {
                         setState(() => email = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       decoration: textInputDecoration.copyWith(
                           hintText: 'Mot de passe'),
                       obscureText: true,
-                      validator: (val) => val.length < 6
+                      validator: (String val) => val.length < 6
                           ? 'Entrer un password 6+ charactères'
                           : null,
-                      onChanged: (val) {
+                      onChanged: (String val) {
                         setState(() => password = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     RaisedButton(
                         color: Colors.teal[400],
-                        child: Text(
+                        child: const Text(
                           'S\'inscrire',
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result =
+                            final dynamic result =
                                 await _auth.registerWithEmailAndPassword(
                                     email, password, profilPicture);
                             if (result == null) {
@@ -141,10 +141,10 @@ class _RegisterState extends State<Register> {
                             }
                           }
                         }),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     )
                   ],
                 ),

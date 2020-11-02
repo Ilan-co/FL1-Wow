@@ -12,7 +12,7 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<dynamic>>.value(
-      value: DatabaseService().Feed,
+      value: DatabaseService().feed,
       child: Scaffold(
         backgroundColor: Colors.teal[300],
         body: FeedList(),
