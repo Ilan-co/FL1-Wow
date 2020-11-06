@@ -33,6 +33,7 @@ class DatabaseService {
     });
   }
 
+  // follow User
   Future<void> followUser(
       String uidToFollow, String token, BuildContext context) async {
     final List<String> uid = <String>[];
@@ -58,6 +59,7 @@ class DatabaseService {
     _firebaseMessaging.subscribeToTopic(uidToFollow);
   }
 
+  // Unfollow User
   Future<void> unfollowUser(String uidToFollow) async {
     final List<String> uid = <String>[];
     uid.add(await _pref.getUID);
@@ -73,6 +75,7 @@ class DatabaseService {
     _firebaseMessaging.unsubscribeFromTopic(uidToFollow);
   }
 
+  // Upload Profil Picture
   Future<void> uploadProfilPicture(PickedFile picture) async {
     final String dir = (await getApplicationDocumentsDirectory()).path;
     final String newName = _path.join(dir, '$uid.png');
@@ -88,6 +91,7 @@ class DatabaseService {
         );
   }
 
+  // Upload publication to feed
   Future<void> uploadPublication(
       BuildContext context, PickedFile picture, String location) async {
     final String uid = await _pref.getUID;
@@ -137,6 +141,7 @@ class DatabaseService {
     }).toList();
   }
 
+  // Feed list from snapshot
   List<dynamic> _feedListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map<dynamic>((DocumentSnapshot doc) {
       // print(doc.data);
@@ -148,11 +153,11 @@ class DatabaseService {
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
       uid: uid,
-      name: snapshot.data['name'].toString(),
-      location: snapshot.data['location'].toString(),
-      picture: snapshot.data['picture'].toString(),
-      followers: snapshot.data['followers'] as List<String>,
-      follows: snapshot.data['follows'] as List<String>,
+      name: snapshot.data['name'] as String,
+      location: snapshot.data['location'] as String,
+      picture: snapshot.data['picture'] as String,
+      followers: snapshot.data['followers'] as List<dynamic>,
+      follows: snapshot.data['follows'] as List<dynamic>,
     );
   }
 
@@ -161,6 +166,7 @@ class DatabaseService {
     return flutagramerCollection.snapshots().map(_flutagramerListFromSnapshot);
   }
 
+  // get Feed stream
   Stream<List<dynamic>> get feed {
     return flutagramerCollection.snapshots().map(_feedListFromSnapshot);
   }
