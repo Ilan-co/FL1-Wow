@@ -17,6 +17,6 @@ class UserData {
   final String name;
   final String location;
   final String picture;
-  final List<String> followers;
-  final List<String> follows;
+  final List<dynamic> followers;
+  final List<dynamic> follows;
 }
