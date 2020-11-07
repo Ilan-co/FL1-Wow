@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 class Register extends StatefulWidget {
   const Register({this.toggleView});
+
   final Function toggleView;
 
   @override
@@ -26,14 +27,16 @@ class _RegisterState extends State<Register> {
   PickedFile profilPicture;
 
   Future<void> _openGal() async {
-    final PickedFile picture = await _imagePicker.getImage(source: ImageSource.gallery);
+    final PickedFile picture =
+        await _imagePicker.getImage(source: ImageSource.gallery);
     setState(() {
       profilPicture = picture;
     });
   }
 
   Future<void> _openCamera() async {
-    final PickedFile picture = await _imagePicker.getImage(source: ImageSource.camera);
+    final PickedFile picture =
+        await _imagePicker.getImage(source: ImageSource.camera);
     setState(() {
       profilPicture = picture;
     });
@@ -62,6 +65,7 @@ class _RegisterState extends State<Register> {
     return loading
         ? Loading()
         : Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.teal[300],
             appBar: AppBar(
               backgroundColor: Colors.teal,
@@ -76,7 +80,8 @@ class _RegisterState extends State<Register> {
               ],
             ),
             body: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(

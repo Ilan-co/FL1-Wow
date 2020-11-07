@@ -33,15 +33,15 @@ class _HomeState extends State<Home> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.line_style),
-          title: Text('Fil d\'actualité'),
+          label: 'Fil d\'actualité',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list),
-          title: Text('Flutagrammers'),
+          label: 'Flutagrammers',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add_a_photo),
-          title: Text('Prendre une photo'),
+          label: 'Prendre une photo',
         ),
       ],
       currentIndex: _selectedIndex,
@@ -57,7 +57,8 @@ class _HomeState extends State<Home> {
           context: context,
           builder: (BuildContext context) {
             return Container(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
               child: SettingsForm(),
             );
           });
