@@ -25,11 +25,13 @@ class DatabaseService {
       Firestore.instance.collection('Flutagramers');
 
   Future<void> updateUserData(String location, String name) async {
-    return await flutagramerCollection.document(uid).setData(<String, String>{
+    return await flutagramerCollection.document(uid).setData(<String, dynamic>{
       'token': await _firebaseMessaging.getToken(),
       'uid': uid,
       'location': location,
-      'name': name
+      'name': name,
+      'followers': <String>[''],
+      'follows': <String>[''],
     });
   }
 

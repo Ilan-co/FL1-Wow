@@ -1,13 +1,14 @@
 class Flutagramer {
   Flutagramer(
       {this.uid,
-        this.token,
-        this.name,
-        this.location,
-        this.picture,
-        this.feedPictures,
-        this.followers,
-        this.follows});
+      this.token,
+      this.name,
+      this.location,
+      this.picture,
+      this.feedPictures,
+      this.followers,
+      this.follows});
+
   final String uid;
   final String token;
   final String name;
@@ -16,6 +17,4 @@ class Flutagramer {
   final List<dynamic> feedPictures;
   final List<dynamic> followers;
   final List<dynamic> follows;
-
-
 }

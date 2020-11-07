@@ -1,16 +1,28 @@
 # flutagram
 
-A new Flutter project.
+Projet Flutter du groupe FL1-Wow.
 
-## Getting Started
+## Version du projet
 
-This project is a starting point for a Flutter application.
+Flutter 1.22.3
 
-A few resources to get you started if this is your first Flutter project:
+## Déploiement 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- ### Android Studio
+  1. Récupérer le projet avec un git clone depuis le repository (https://github.com/Ilan-co/FL1-Wow)
+  2. Ouvrir le projet ou lancer un terminal sur le dossier récupéré
+  3. Lancer un émulateur ou brancher votre appareil
+  4. Si Ouverture de projet sur l'étape 2 : Sélectionner l'émulateur ou l'appareil voulu sinon passer à l'étape suivante
+  5. Faire Maj + F10 ou cliquer sur Run ou écrire "flutter run" sur le terminal
+  
+- ### Visual Code
+  1. Récupérer le projet avec un git clone depuis le repository (https://github.com/Ilan-co/FL1-Wow)
+  2. Ouvrir le projet ou lancer un terminal sur le dossier récupéré
+  3. Lancer un émulateur ou brancher votre appareil
+  4. Cliquer sur Run ou écrire "flutter run" sur un terminal situé dans le dossier du projet
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- ### Xcode
+  1. Récupérer le projet avec un git clone depuis le repository (https://github.com/Ilan-co/FL1-Wow)
+  2. Ouvrir le projet ou lancer un terminal sur le dossier récupéré
+  3. Lancer un émulateur ou brancher votre appareil
+  4. Cliquer sur Run ou écrire "flutter run" sur un terminal situé dans le dossier du projet
