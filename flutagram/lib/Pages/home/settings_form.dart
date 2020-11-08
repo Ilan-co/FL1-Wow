@@ -1,7 +1,6 @@
+import 'package:flutagram/Assets/loading.dart';
 import 'package:flutagram/Models/user.dart';
 import 'package:flutagram/Services/database.dart';
-import 'package:flutagram/Assets/constants.dart';
-import 'package:flutagram/Assets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,10 +11,6 @@ class SettingsForm extends StatefulWidget {
 
 class _SettingsFormState extends State<SettingsForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  // form values
-  String _currentName;
-  String _currentLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +35,10 @@ class _SettingsFormState extends State<SettingsForm> {
                   const SizedBox(
                     height: 20.0,
                   ),
+                  Text(userData.name ?? 'Non indiqué'),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -60,37 +59,6 @@ class _SettingsFormState extends State<SettingsForm> {
                         ],
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  const Text(
-                    'Modifier son profil',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  const SizedBox(height: 20.0),
-                  TextFormField(
-                    initialValue: userData.name,
-                    decoration: textInputDecoration,
-                    validator: (String val) => val.isEmpty ? 'Entrer un nom' : null,
-                    onChanged: (String val) => setState(() => _currentName = val),
-                  ),
-                  const SizedBox(height: 10.0),
-                  RaisedButton(
-                    color: Colors.teal[400],
-                    child: const Text(
-                      'Mettre à jour',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        await DatabaseService(uid: user.uid).updateUserData(
-                          _currentLocation ?? snapshot.data.location,
-                          _currentName ?? snapshot.data.name,
-                        );
-                        Navigator.pop(context);
-                      }
-                    },
                   ),
                 ],
               ),
