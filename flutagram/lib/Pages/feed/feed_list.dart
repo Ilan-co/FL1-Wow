@@ -27,7 +27,7 @@ class _FeedListState extends State<FeedList> {
     return ListView.builder(
       itemCount: feedPictures.length,
       itemBuilder: (BuildContext context, int index) {
-        return PictureTile(feedPicture: feedPictures[0]);
+        return PictureTile(feedPicture: feedPictures[index]);
       },
     );
   }
