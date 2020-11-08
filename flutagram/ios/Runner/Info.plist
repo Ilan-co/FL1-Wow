@@ -41,7 +41,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
+	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Usage</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location Usage</string>
 	<key>NSCameraUsageDescription</key>
-    <string>Camera Usage</string>
+	<string>Camera Usage</string>
 </dict>
 </plist>
